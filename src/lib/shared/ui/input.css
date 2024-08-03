@@ -1,0 +1,28 @@
+input {
+	all: unset;
+}
+
+label:has(input[type='radio']) {
+	cursor: pointer;
+}
+label:has(input[type='radio']):hover {
+	opacity: 0.75;
+}
+label:has(input[type='radio']):active {
+	opacity: 0.5;
+}
+
+label {
+	color: var(--color-secondary-text);
+}
+
+label:has(:checked) {
+	color: var(--color-checked, var(--color-header));
+}
+
+input[type='text'],
+input[type='password'] {
+	border: var(--border);
+	border-radius: 8px;
+	padding: 1rem;
+}
