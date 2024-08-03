@@ -3,7 +3,11 @@ import { readdirSync, statSync, existsSync } from 'node:fs';
 import path, { basename } from 'node:path';
 import { MEDIA_LOCATION } from '../env';
 
-export const getMediaItems = () => readdir(MEDIA_LOCATION);
+export const getMediaItems = async () => {
+	const content = await readdir(MEDIA_LOCATION);
+
+	return content.filter((item) => !item.startsWith('.')).sort();
+};
 
 const SUBTITLE_EXTS = new Set(['.ass', '.srt', '.ssa', '.sub']);
 const isSubtitles = (filename: string) => SUBTITLE_EXTS.has(path.extname(filename));
@@ -35,7 +39,7 @@ export const getMediaSubtitles = async (title: string) => {
 	const exts = new Set(['.ass', '.srt', '.ssa', '.sub']);
 	const dirs = searchDirsWithFiles(root, exts);
 
-	return dirs.map((dir) => dir.replace(root, '').slice(1));
+	return dirs.map((dir) => dir.replace(root, '').slice(1)).sort();
 };
 
 function addPostfix(destination: string, postfix: string) {
