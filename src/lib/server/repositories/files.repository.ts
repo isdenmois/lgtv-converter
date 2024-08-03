@@ -12,14 +12,19 @@ export const getMediaItems = async () => {
 const SUBTITLE_EXTS = new Set(['.ass', '.srt', '.ssa', '.sub']);
 const isSubtitles = (filename: string) => SUBTITLE_EXTS.has(path.extname(filename));
 
-function searchDirsWithFiles(directory: string, exts: Set<string>, filepaths: string[] = []) {
+function searchDirsWithFiles(
+	directory: string,
+	exts: Set<string>,
+	filepaths: string[] = [],
+	isRoot = true
+) {
 	const files = readdirSync(directory);
 
 	for (const filename of files) {
 		const filepath = path.join(directory, filename);
 		if (statSync(filepath).isDirectory()) {
-			searchDirsWithFiles(filepath, exts, filepaths);
-		} else if (isSubtitles(filename)) {
+			searchDirsWithFiles(filepath, exts, filepaths, false);
+		} else if (!isRoot && isSubtitles(filename)) {
 			filepaths.push(directory);
 			break;
 		}
