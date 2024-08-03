@@ -12,10 +12,10 @@ COPY --from=modules /app/node_modules node_modules/
 COPY . .
 RUN bun run build
 
-FROM oven/bun:latest as builder
+FROM oven/bun:latest
 ARG PORT
 COPY --from=modules /app/node_modules node_modules/
-COPY --from=builder /app/build /app/build
+COPY --from=builder /app/build build/
 
 EXPOSE $PORT
 CMD ["bun", "./build/index.js"]
